@@ -1,0 +1,68 @@
+/* General Styles */
+body {
+  background: linear-gradient(45deg, var(--theme), var(--background));    
+  font-family: Arial, sans-serif;
+  padding: 10px;
+  color: var(--text);
+}
+
+h1 {
+  text-align: center;
+}
+
+p {
+  text-align: center;
+}
+
+/* Table Styles */
+table {
+  border-collapse: collapse;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto 50px;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+table th {
+  font-weight: bold;
+  text-align: left;
+  padding: 10px;
+  background-color: #222;
+  border: 1px solid #444;
+  color: white; /* Improved readability */
+}
+
+table td {
+  vertical-align: top;
+  padding: 10px;
+  border: 1px solid #444;
+}
+
+tr:nth-child(even) {
+  background-color: #1a1a1a;
+}
+
+/* Changelog Key Styles */
+.changelog-key {
+  border-collapse: collapse;
+  font-size: 14px;
+  margin: 20px auto 0;
+  max-width: 800px; /* Adjusted for consistency */
+}
+
+.changelog-key th,
+.changelog-key td {
+  text-align: left;
+  font-weight: bold;
+  padding: 5px;
+  background-color: #222;
+  border: 1px solid #444;
+}
+
+/* Cell Styles */
+.add { color: #2ecc71; }
+.remove { color: #e74c3c; }
+.update { color: #3498db; }
+.sound { color: #b700ff; }
+.blocked { color: #bdc3c7; }

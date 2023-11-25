@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+  <head>
+     <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXGG6SJL6H"></script>
+    <script>
+          window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-XXGG6SJL6H');
+    </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8217504918882767"
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="css/settings.css" />
+    <link rel="stylesheet" href="/css/themes.css" />
+    <title id="pageTitle">Settings | lioxryt</title>
+    <link rel="icon" href="/img/newlogo.png" type="image/x-icon" />
+  </head>
+  <body>
+    <h1 style="font-size: 40px">Settings</h1>
+    <h2>Tab Cloak</h2>
+    <div class="buttons">
+      <p>Title:</p>
+      <input
+        id="title"
+        class="input"
+        placeholder="Title"
+        onkeyup="setTitle(this.value)"
+      />
+      <br />
+      <p>Favicon:</p>
+      <input
+        id="icon"
+        class="input"
+        placeholder="Favicon"
+        onkeyup="setFavicon(this.value.trim())"
+      />
+      <br />
+      <br />
+      <button class="button" onclick="resetTab()">Reset</button>
+    </div>
+    <br />
+    <div class="section-title">Presets</div>
+    <div id="buttons-container"></div>
+    <hr />
+    <h2>Themes</h2>
+    <div class="theme-buttons">
+      <button class="theme-button" data-theme="default">Default</button>
+      <button class="theme-button" data-theme="light">Light</button>
+      <button class="theme-button" data-theme="dark">Dark</button>
+      <button class="theme-button" data-theme="sumpeach">Summer Peach</button>
+      <button class="theme-button" data-theme="blpi">Gender Reveal</button>
+      <button class="theme-button" data-theme="cansh">Candy Shop</button>
+      <button class="theme-button" data-theme="cblue">Cool Wave</button>
+      <button class="theme-button" data-theme="echo">3kh0</button>
+    </div>
+    <hr />
+    <h2>CDN Settings</h2>
+<select id="drop" class="drop">
+  <option value="auto">Auto</option>
+  <option value="rawgithack">RawCDN Githack</option>
+  <option value="rawcdngithack">RawDEV Githack</option>
+  <option value="gitloaf">Gitloaf</option>
+  <option value="gitloaf2">Gitloaf 2</option>
+  <option value="githubrawdev">RawDEV Githubraw</option>
+  <option value="githubrawcdn">RawCDN Githubraw</option>
+  <option value="gitcf">GitCF</option>
+  <option value="github">Github</option>
+</select>
+<script>
+  const cdnUrls = {
+    gitloaf:
+      "https://gitloaf.com/cdn/lioxryt/lioxryt-assets/main",
+    githubrawdev:
+      "https://githubraw.com/lioxryt/lioxryt-assets/main",
+    githubrawcdn:
+      "https://cdn.githubraw.com/lioxryt/lioxryt-assets/main",
+    gitloaf2:
+      "https://gitloaf.albinus.gay/cdn/lioxryt/lioxryt-assets/main",
+    gitcf:
+      "https://gh.maple3142.workers.dev/lioxryt/lioxryt-assets/53f5841a09cb22159d90506ecfbd0fd2032e9a5c",
+    rawgithack: "https://raw.githack.com/lioxryt/lioxryt-assets/main",
+    rawcdngithack:
+      "https://rawcdn.githack.com/lioxryt/lioxryt-assets/0cf7d107ddb99c99ea20387522aa29b8ee382049",
+    github:
+      window.location.protocol +
+      "//" +
+      window.location.host +
+      "/lioxryt-assets",
+  };
+
+  function selectAutoCdn() {
+    const select = document.getElementById("drop");
+    const localStorageCdn = localStorage.getItem("cdnUrl");
+
+    if (!localStorageCdn) {
+      // If it's the user's first time on the site, set the choice to "Auto"
+      select.value = "auto";
+    }
+
+    function checkCdnAvailability(cdnList) {
+      if (cdnList.length === 0) {
+        // No working CDN found, default to "Auto"
+        select.value = "auto";
+        localStorage.setItem("cdnUrl", "");
+        console.log("No working CDN found. Defaulting to Auto.");
+        return;
+      }
+
+      const cdn = cdnList.shift();
+      fetch(cdnUrls[cdn] + "/other/1/favicon.ico")
+        .then((response) => {
+          if (response.status === 200) {
+            // CDN is available, select it
+            localStorage.setItem("cdnUrl", cdnUrls[cdn]);
+            select.value = cdn;
+            console.log("Selected CDN URL:", cdnUrls[cdn]);
+          } else {
+            // CDN is not available, try the next one
+            checkCdnAvailability(cdnList);
+          }
+        })
+        .catch((error) => {
+          console.error("Error checking CDN:", error);
+          // CDN check failed, try the next one
+          checkCdnAvailability(cdnList);
+        });
+    }
+
+    // Start the CDN availability check only if "Auto" is selected
+    if (select.value === "auto") {
+      checkCdnAvailability(Object.keys(cdnUrls));
+    }
+  }
+
+  // Call the selectAutoCdn function when the page loads
+  window.addEventListener("load", selectAutoCdn);
+
+  // Add the updateCdn function for manual CDN selection (if needed)
+  function updateCdn() {
+    const select = document.getElementById("drop");
+    const selectedCdn = select.value;
+
+    if (selectedCdn !== "auto") {
+      // Store the selected CDN choice in localStorage
+      localStorage.setItem("cdnUrl", cdnUrls[selectedCdn]);
+      console.log("Selected CDN URL:", cdnUrls[selectedCdn]);
+    } else {
+      // Remove the CDN choice from localStorage if "Auto" is selected
+      localStorage.removeItem("cdnUrl");
+      console.log("Selected CDN: Auto");
+      location.reload()
+    }
+  }
+
+  // Add an event listener for manual CDN selection
+  document.getElementById("drop").addEventListener("change", updateCdn);
+
+</script>
+  <hr />
+    <h2>Panic Button</h1>
+    <p>When Enabled Press ` to Open Your Set Panic Address<p>
+    <div class="panic">
+        <button class="button" onclick="panOn()">Enable</button>
+        <button class="button" onclick="panOff()">Disable</button>
+        <br>
+        <br>
+        <input
+            id="panic-address"
+            value=""
+            placeholder="Panic Address"
+            autocomplete="on"
+            type="text"
+            autofocus
+          />
+    </div>
+    <br>
+    <hr />
+    <h2>About:Blank Embeder</h2>
+    <div class="console">
+      <div class="consolebody">
+        <p>Enter a URL you want to be opened in an about:blank page below:</p>
+        <p class="console-input">
+          <input
+            id="url-target"
+            value=""
+            placeholder="Website Address"
+            autocomplete="on"
+            type="text"
+            autofocus
+          />
+        </p>
+      </div>
+      <div class="button-wrapper">
+        <button id="create" class="console-button">Create page</button>
+      </div>
+    </div>
+    <script src="js/cloak.js"></script>
+    <script src="/js/generategames.js"></script>
+    <script src="js/aboutblank.js"></script>
+    <script src="js/settings.js"></script>
+    <script src="js/index.js"></script>
+    <script src="/js/navbar.js"></script>
+  </body>
+</html>
